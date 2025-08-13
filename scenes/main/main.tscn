@@ -1,8 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://dkla6kbmkryt7"]
+[gd_scene load_steps=4 format=3 uid="uid://dkla6kbmkryt7"]
 
 [ext_resource type="PackedScene" uid="uid://cf57g8j1bxx0u" path="res://scenes/player/player.tscn" id="1_hyk8p"]
 
+[sub_resource type="Gradient" id="Gradient_hyk8p"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iuonh"]
+gradient = SubResource("Gradient_hyk8p")
+
 [node name="main" type="Node2D"]
 
+[node name="bg_temp" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(10.48, 6.08)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource("GradientTexture2D_iuonh")
+
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_hyk8p")]
-position = Vector2(348, 174)
+projectile_root_path = NodePath("../Projectiles")
+
+[node name="Projectiles" type="Node2D" parent="."]
