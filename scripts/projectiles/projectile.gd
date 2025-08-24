@@ -2,7 +2,7 @@
 extends Area2D
 
 @export var speed: float = 900.0
-@export var damage: int = 5
+@export var damage: int = 1
 @export var lifetime: float = 1.5
 
 var direction: Vector2 = Vector2.RIGHT
@@ -34,11 +34,17 @@ func _hit(target: Node) -> void:
 	if has_hit:
 		return
 	has_hit = true
-	monitoring = false  # prevent multi-hit in same frame
+
+	# Defer physics-y changes because we're inside a body/area_entered callback
+	set_deferred("monitoring", false)
+	set_deferred("collision_mask", 0)
+	set_deferred("collision_layer", 0)
+	var shape := $Shape2D
+	if shape:
+		shape.set_deferred("disabled", true)
 
 	if "apply_damage" in target:
 		target.apply_damage(damage)
-
 	_spawn_impact_fx()
 	queue_free()
 

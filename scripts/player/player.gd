@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var animated_sprite = $anim_sprite
 @onready var muzzle_distance = 12.0
 @onready var fire_cooldown = $FireCooldown
+@onready var camera_rig = $CameraRig
 
 @export var projectile_root_path: NodePath
 @export var fire_rate = 0.18
@@ -17,13 +18,15 @@ var can_fire = true
 const SPEED = 150.0
 
 func _ready():
-	# Detect duplicates BEFORE adding to group
-	var others = get_tree().get_nodes_in_group("player")
-	if others.size() > 0:
-		push_error("Duplicate Player detected at runtime: " + str(others))
+	# Enforce single Player instance at runtime
 	add_to_group("player")
-	var all_players = get_tree().get_nodes_in_group("player")
-	print("[PLAYER] instances in tree: ", all_players.size(), " -> ", all_players)
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 1:
+		var keep: Node = players[0]
+		if keep != self:
+			push_warning("Duplicate Player detected; removing this instance: %s" % [self])
+			queue_free()
+			return
 	
 	fire_cooldown.wait_time = fire_rate
 	fire_cooldown.timeout.connect(_on_fire_cooldown_timeout)
@@ -58,7 +61,19 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_up"):
 		input_dir.y -= 1
 
-	velocity = input_dir.normalized() * SPEED
+	# 2) Normalize (so diagonals aren’t faster)
+	if input_dir != Vector2.ZERO:
+		input_dir = input_dir.normalized()
+
+	# 3) Rotate into world space by the camera’s rotation
+	#    Now W is always "forward on screen", A is "left on screen", etc.
+	var input_world: Vector2 = input_dir.rotated(camera_rig.rotation)
+	
+	velocity = input_world.normalized() * SPEED
+	
+	# Keep sprite rotated opposite the rig so it appears glued to screen
+	animated_sprite.rotation = camera_rig.rotation
+
 	move_and_slide()
 	
 	# Animation control

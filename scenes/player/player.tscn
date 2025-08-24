@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cf57g8j1bxx0u"]
+[gd_scene load_steps=11 format=3 uid="uid://cf57g8j1bxx0u"]
 
 [ext_resource type="Script" uid="uid://jnmbowah16t7" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://b5475aidtiusu" path="res://assets/sprites/player_tilesheet.png" id="2_dovo2"]
 [ext_resource type="PackedScene" uid="uid://cgaxir1vjqnm6" path="res://scenes/projectiles/projectile.tscn" id="3_gmlin"]
+[ext_resource type="Script" uid="uid://cqux5qv20gpx" path="res://scripts/player/CameraRig.gd" id="3_p47bc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]
 atlas = ExtResource("2_dovo2")
@@ -51,13 +52,16 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(16, 16)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
-collision_layer = 0
-collision_mask = 0
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["player"]]
+collision_mask = 8
 script = ExtResource("1_dovo2")
 projectile_scene = ExtResource("3_gmlin")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CameraRig" type="Node2D" parent="."]
+script = ExtResource("3_p47bc")
+
+[node name="Camera2D" type="Camera2D" parent="CameraRig"]
+ignore_rotation = false
 
 [node name="anim_sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1, 0.7)

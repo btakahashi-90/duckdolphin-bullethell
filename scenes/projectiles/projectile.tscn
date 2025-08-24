@@ -1,12 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://cgaxir1vjqnm6"]
 
-[ext_resource type="Texture2D" uid="uid://cq8clxqaw3qkd" path="res://assets/sprites/red.png" id="1_dtkph"]
 [ext_resource type="Script" uid="uid://bdltxxeyvhhfm" path="res://scripts/projectiles/projectile.gd" id="1_wndne"]
+[ext_resource type="Texture2D" uid="uid://crqneitr1xeb8" path="res://assets/sprites/red_arrow.png" id="2_wndne"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wndne"]
 
-[node name="Projectile" type="Area2D"]
-collision_mask = 2
+[node name="Projectile" type="Area2D" groups=["player_bullet"]]
+collision_layer = 2
+collision_mask = 12
 script = ExtResource("1_wndne")
 
 [node name="Shape2D" type="CollisionShape2D" parent="."]
@@ -14,8 +15,9 @@ scale = Vector2(0.5, 0.5)
 shape = SubResource("CircleShape2D_wndne")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_dtkph")
+texture = ExtResource("2_wndne")
 
 [node name="LifeTimer" type="Timer" parent="."]
 wait_time = 1.5

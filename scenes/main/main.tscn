@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkla6kbmkryt7"]
+[gd_scene load_steps=6 format=3 uid="uid://dkla6kbmkryt7"]
 
 [ext_resource type="PackedScene" uid="uid://cf57g8j1bxx0u" path="res://scenes/player/player.tscn" id="1_hyk8p"]
+[ext_resource type="Script" uid="uid://cqyckqk0xtmq2" path="res://scripts/enemies/EnemySpawns.gd" id="2_iuonh"]
+[ext_resource type="PackedScene" uid="uid://bbtgdi54maqyc" path="res://scenes/enemies/EnemySentry.tscn" id="2_k2fmo"]
 
 [sub_resource type="Gradient" id="Gradient_hyk8p"]
 
@@ -20,7 +22,20 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = SubResource("GradientTexture2D_iuonh")
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("1_hyk8p")]
+[node name="Player" parent="." instance=ExtResource("1_hyk8p")]
 projectile_root_path = NodePath("../Projectiles")
 
 [node name="Projectiles" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="EnemySpawns" type="Node2D" parent="."]
+script = ExtResource("2_iuonh")
+enemy_scene = ExtResource("2_k2fmo")
+
+[node name="Spawn1" type="Marker2D" parent="EnemySpawns"]
+position = Vector2(100, -100)
+
+[node name="Spawn2" type="Marker2D" parent="EnemySpawns"]
+position = Vector2(-100, 100)

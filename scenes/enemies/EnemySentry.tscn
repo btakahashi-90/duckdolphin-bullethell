@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbtgdi54maqyc"]
+
+[ext_resource type="Script" uid="uid://c6kb5jo047bbr" path="res://scripts/enemies/EnemySentry.gd" id="1_ot7bv"]
+[ext_resource type="Texture2D" uid="uid://bhpng3lsjakt0" path="res://assets/sprites/BlankCube.png" id="2_pbu27"]
+[ext_resource type="PackedScene" uid="uid://5gggsne7bavj" path="res://scenes/enemies/EnemyBullet.tscn" id="2_qbhq7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qbhq7"]
+size = Vector2(32, 32)
+
+[node name="EnemySentry" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 10
+script = ExtResource("1_ot7bv")
+projectile_scene = ExtResource("2_qbhq7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qbhq7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pbu27")
+
+[node name="FireTimer" type="Timer" parent="."]
